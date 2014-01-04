@@ -13,7 +13,7 @@ class Test(webapp2.RequestHandler):
         
         artists = [artist]
         
-        r = tools.to_json(artists)
+        r = tools.ndb_to_json(artists)
         self.response.content_type = "application/json"
         self.response.write(r)
 

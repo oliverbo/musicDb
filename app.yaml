@@ -13,7 +13,9 @@ libraries:
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
+- url: /html
+  static_dir: html
 - url: /api/.*
   script: datamodel.application
 - url: /.*
-  script: guestbook.application
+  script: main.application

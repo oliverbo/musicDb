@@ -32,6 +32,7 @@ class Greeting(ndb.Model):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
+        logging.info("wrong!")
         guestbook_name = self.request.get('guestbook_name', DEFAULT_GUESTBOOK_NAME)
         
         # Ancestor Queries, as shown here, are strongly consistent with the High
