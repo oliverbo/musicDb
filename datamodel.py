@@ -1,7 +1,8 @@
 import webapp2
 import json
-import tools
-from artist import Artist
+from musicdb.model import Artist
+from musicdb import tools
+
 
 class Test(webapp2.RequestHandler):
     
