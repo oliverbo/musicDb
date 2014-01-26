@@ -7,5 +7,5 @@ class ModelBase(ndb.Model):
     model_name = "BASE"
     
 class Artist(ModelBase):
-    canonical_name = ndb.StringProperty()
-    display_name = ndb.StringProperty()
+    canonicalName = ndb.StringProperty()
+    displayName = ndb.StringProperty()

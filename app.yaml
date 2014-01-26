@@ -13,6 +13,8 @@ libraries:
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
+- url: /js
+  static_dir: js
 - url: /html
   static_dir: html
 - url: /api/.*
