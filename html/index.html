@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="musicDbApp">
   <head>
 	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-
+	  <script src="/js/controller.js"></script
 	  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  <body>  
+  <body ng-controller="ArtistController">  
 	  <div>
 		 <label>Name:</label>
 		 <input type="text" ng-model="yourName" placeholder="Enter a name here">
 		 <hr>
 		 <h1>Hello {{yourName}}!</h1>
 	  </div>	  
+
+	  <ul>
+	  <li ng-repeat="artist in artists">{{artist.canonicalName}}
+	  </ul>
 
   </body>
 </html>
