@@ -8,10 +8,15 @@ class Test(webapp2.RequestHandler):
     
     def get(self):
         artist = Artist()
-        artist.canonical_name = "@emikatwit"
-        artist.display_name = "Emika"
+        artist.canonicalName = "@emikatwit"
+        artist.displayName = "Emika"
         
         artists = [artist]
+        
+        artist = Artist()
+        artist.canonicalName = "@laurelhalo"
+        artist.displayName = "Laurel Halo"
+        artists.append(artist)
         
         r = tools.ndb_to_json(artists)
         self.response.content_type = "application/json"
