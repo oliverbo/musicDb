@@ -18,6 +18,11 @@ class Test(webapp2.RequestHandler):
         artist.displayName = "Laurel Halo"
         artists.append(artist)
         
+        artist = Artist()
+        artist.canonicalName = "@gazelletwin"
+        artist.displayName = "Gazelle Twin"
+        artists.append(artist)
+        
         r = tools.ndb_to_json(artists)
         self.response.content_type = "application/json"
         self.response.write(r)

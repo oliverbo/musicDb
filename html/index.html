@@ -2,7 +2,11 @@
 <html ng-app="musicDbApp">
   <head>
 	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-	  <script src="/js/controller.js"></script
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+	  <script src="/js/services.js"></script>
+	  <script src="/js/controller.js"></script>
+	  <script src="/js/app.js"></script>
 	  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   <body ng-controller="ArtistController">  
 	  <div>
@@ -13,7 +17,7 @@
 	  </div>	  
 
 	  <ul>
-	  <li ng-repeat="artist in artists">{{artist.canonicalName}}
+	  <li ng-repeat="artist in artists">{{artist.canonicalName}}: {{artist.displayName}}</li>
 	  </ul>
 
   </body>

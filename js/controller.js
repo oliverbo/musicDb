@@ -1,7 +1,5 @@
-var musicDbApp = angular.module('musicDbApp', []);
+var musicDbControllers = angular.module('musicDbControllers', ['musicDbServices']);
 
-musicDbApp.controller("ArtistController", function($scope, $http) {
-	$http.get("/api/artist").success(function(data) {
-		$scope.artists = data
-	})
+musicDbControllers.controller("ArtistController", function($scope, Artist) {
+	$scope.artists = Artist.query();
 });
