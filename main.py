@@ -5,10 +5,15 @@ import logging
 import webapp2
 
 class MainPage(webapp2.RequestHandler):
-
     def get(self):
-        self.redirect('html/index.html', True)        
+        self.redirect('html/index.html', True)
+        
+class AdminPage(webapp2.RequestHandler):
+    def get(self):
+        self.redirect('html/admin.html', True)
+    
 
 application = webapp2.WSGIApplication([
-    ('/', MainPage)
+    ('/', MainPage),
+    ('/admin', AdminPage)
 ], debug=True)

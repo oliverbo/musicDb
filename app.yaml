@@ -21,3 +21,4 @@ handlers:
   script: datamodel.application
 - url: /.*
   script: main.application
+  
