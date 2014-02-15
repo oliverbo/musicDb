@@ -1,10 +1,13 @@
 import webapp2
 import json
+import logging
 from musicdb.model import Artist
 from musicdb import tools
 
+logger = logging.getLogger("datamodel")
 
-class Test(webapp2.RequestHandler):
+
+class ArtistHandler(webapp2.RequestHandler):
     
     def get(self):
         artist = Artist()
@@ -26,7 +29,12 @@ class Test(webapp2.RequestHandler):
         r = tools.ndb_to_json(artists)
         self.response.content_type = "application/json"
         self.response.write(r)
+        
+    def post(self):
+        logger.info("received post request: %s ", self.request.body);
+        artist = json.loads(self.request.body);
+        logger.info("--- %s", artist);
 
 application = webapp2.WSGIApplication([
-    ('/api/artist', Test)
+    ('/api/artist', ArtistHandler)
 ], debug=True)

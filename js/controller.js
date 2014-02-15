@@ -6,4 +6,13 @@ musicDbControllers.controller("ArtistController", function($scope, Artist) {
 
 musicDbControllers.controller("AdminController", function($scope, Artist) {
 	$scope.adminName = "Admin";
+
+	this.save = function() {
+		var artist = new Artist(
+			{canonicalName:this.canonicalName,
+			 displayName:this.displayName
+		 });
+		 alert('save!');
+		 artist.$save();	 
+	}
 });
