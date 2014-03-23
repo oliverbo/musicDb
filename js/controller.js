@@ -10,9 +10,9 @@ musicDbControllers.controller("AdminController", function($scope, Artist) {
 	this.save = function() {
 		var artist = new Artist(
 			{canonicalName:this.canonicalName,
-			 displayName:this.displayName
+			 displayName:this.displayName,
+			 startYear:this.startYear
 		 });
-		 alert('save!');
 		 artist.$save();	 
 	}
 });
