@@ -13,6 +13,7 @@ def artist_parent_key():
     
 # An artist model
 class Artist(ModelBase):
+    model_name = 'ARTIST'
     startYear = ndb.StringProperty()
     
     def copy_data(self, artist_data):
@@ -20,6 +21,18 @@ class Artist(ModelBase):
             self.canonicalName = artist_data['canonicalName']
             self.displayName = artist_data['displayName']
             self.startYear = artist_data['startYear']
+            
+def venue_parent_key():
+    return ndb.Key('Base', 'venue')
     
 class Venue(ModelBase):
+    model_name = "VENUE"
     address = ndb.StringProperty()
+    description = ndb.StringProperty()
+    
+    def copy_data(self, venue_data):
+        if (venue_data):
+            self.canonicalName = venue_data['canonicalName']
+            self.displayName = venue_data['displayName']
+            self.address = venue_data['address']
+            self.description = venue_data['description']
