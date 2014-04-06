@@ -15,8 +15,6 @@ handlers:
   static_dir: stylesheets
 - url: /js
   static_dir: js
-- url: /html
-  static_dir: html
 - url: /api/.*
   script: datamodel.application
 - url: /.*

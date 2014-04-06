@@ -8,6 +8,10 @@
 	  <script src="/js/controller.js"></script>
 	  <script src="/js/app.js"></script>
 	  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  <script>
+  userName = '{{ userName }}';
+  </script>
+  {% raw %}
   <body>  
 	  <div><h1>Admin page</h1></div>
 	  
@@ -28,4 +32,5 @@
 		  <div><button ng-click="admin.save()">Save</button></div>
 	  </div>
   </body>
+  {% endraw %}
 </html>
