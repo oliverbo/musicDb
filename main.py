@@ -16,7 +16,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        self.redirect('html/index.html', True)
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        template_values = { "userName" : "none"}
+        self.response.write(template.render(template_values))
         
 class AdminPage(webapp2.RequestHandler):
     def get(self):
@@ -32,6 +34,6 @@ class AdminPage(webapp2.RequestHandler):
             self.redirect(users.create_login_url('/admin2'))
 
 application = webapp2.WSGIApplication([
-    ('/', MainPage),
-    ('/admin2', AdminPage)
+    ('/main', MainPage),
+    ('/admin', AdminPage)
 ], debug=True)
