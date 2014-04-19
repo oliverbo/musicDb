@@ -1,1 +1,2 @@
-var musicDbApp = angular.module('musicDbApp', ['musicDbServices', 'musicDbControllers', 'ui.bootstrap']);
+var musicDbApp = angular.module('musicDbApp', 
+	[ 'pageModule', 'musicDbServices', 'musicDbControllers', 'ui.bootstrap']);
