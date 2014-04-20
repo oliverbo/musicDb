@@ -45,3 +45,7 @@ def static_page(request_handler, page_name, page_dir = 'html', auth_mode = AUTH_
     else:
         logger.info('No user authenticated')
         request_handler.redirect(users.create_login_url('/admin'))
+        
+def _create_page_module(values):
+	"""Creates JavaScript Code for a Angular module that includes the passed parameters as a JSON object"""
+	
