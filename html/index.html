@@ -6,11 +6,7 @@
 	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
 	  <script src="/js/ui-bootstrap-tpls-0.10.0.js"></script>
 	  <script>
-	  	angular.module('pageModule', []).
-	  		value('pageInfo', {
-		  		'userName' : '{{ userName }}',
-		  		'logoutURI' : '{{ logoutURI }}'
-	  		});
+		  {{ pageInfo }}
 	  </script>
 	  <script src="/js/services.js"></script>
 	  <script src="/js/controller.js"></script>
@@ -20,12 +16,38 @@
 	  
   {% raw %}
   <body ng-controller="ArtistController">
-  	<h1>Music DB</h1>
-  	<div>User Name: {{ userName }} | <a href="{{logoutURI}}">logout</a></div>
-	  <ul>
-	  <li ng-repeat="artist in artists">{{artist.canonicalName}}: {{artist.displayName}} {{artist.startYear}}</li>
-	  </ul>
-
+  	<div class="container">
+  		<div class='row'>
+  			<div class='col-md-8'>
+		  		<small>User Name: {{ userName }} | <a href="{{logoutURI}}">logout</a></small>
+		  	</div>
+  		</div>
+  		<div class='row'>
+  			<div class='col-md-8'>
+	  			<h1>Music DB</h1>
+	  		</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-md-8">
+	  			<table class="table table-hover">
+	  				<thead>
+	  				<tr>
+	  					<th>Unique Name</th>
+	  					<th>Display Name</th>
+	  					<th>Active since</th>
+	  				</tr>
+	  				</thead>
+	  				<tbody>
+	  				<tr ng-repeat="artist in artists">
+	  					<td>{{artist.canonicalName}}</td>
+	  					<td>{{artist.displayName}}</td>
+	  					<td>{{artist.startYear}}</td>
+	  				</tr>
+	  				</tbody>
+	  			</table>
+	  		</div>
+  		</div>
+  	</div>  
   </body>
   {% endraw %}
 </html>

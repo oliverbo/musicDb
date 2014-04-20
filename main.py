@@ -10,7 +10,7 @@ import webapp2
 import jinja2
 
 logger = logging.getLogger("main")
-apptools.root = os.path.dirname(__file__)
+apptools.web_root = os.path.dirname(__file__) + '/html'
 
 class MainPage(webapp2.RequestHandler):
 	def get(self):
