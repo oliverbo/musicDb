@@ -37,7 +37,7 @@ class VenueHandler(webapp2.RequestHandler):
     def post(self):
         logger.info("received post request: %s ", self.request.body)
         venue_data = json.loads(self.request.body)
-        logger.info("--- %s", venue_data)
+        logger.debug("--- %s", venue_data)
         venue = Venue(parent = musicdb.model.venue_parent_key())
         venue.copy_data(venue_data)
         venue.put()

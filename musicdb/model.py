@@ -29,6 +29,7 @@ class Venue(ModelBase):
     model_name = "VENUE"
     address = ndb.StringProperty()
     description = ndb.StringProperty()
+    capacity = ndb.IntegerProperty()
     
     def copy_data(self, venue_data):
         if (venue_data):
@@ -36,3 +37,4 @@ class Venue(ModelBase):
             self.displayName = venue_data['displayName']
             self.address = venue_data['address']
             self.description = venue_data['description']
+            self.capacity = int(venue_data['capacity'])

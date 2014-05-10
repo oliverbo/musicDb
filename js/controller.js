@@ -34,9 +34,9 @@ musicDbControllers.controller("VenueAdminController", function($scope, Venue) {
 			{
 				canonicalName : this.canonicalName,
 			 	displayName : this.displayName,
-			 	startYear : this.startYear,
 				address : this.address,
-				description : this.description
+				description : this.description,
+				capacity : this.capacity
 		 });
 		 venue.$save();
 	}

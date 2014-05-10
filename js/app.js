@@ -8,13 +8,12 @@ musicDbApp.config(['$routeProvider',
 				templateUrl : '/partials/artists.html',
 				controller : 'ArtistController'
 			}).
-//			when('/venues', {
-//				templateUrl : 'html/partials/venues.html',
-//				controller : 'VenueController'
-//			}).
+			when('/venues', {
+				templateUrl : '/partials/venues.html',
+				controller : 'VenueController'
+			}).
 			otherwise({
-				
-				redirectTo : '/artists'
+				redirectTo : '/venues'
 			});
 	}
 ]);
