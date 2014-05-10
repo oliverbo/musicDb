@@ -14,12 +14,14 @@ apptools.web_root = os.path.dirname(__file__) + '/html'
 
 class MainPage(webapp2.RequestHandler):
 	def get(self):
+		logger.info("Requested main page: " + self.request.path)
 		page_handler.static_page(self, "index.html")
 
-class ArtistsPage(webapp2.RequestHandler):
+class PartialsPage(webapp2.RequestHandler):
 	def get(self):
-		page_handler.static_page(self, "partials/artists.html")
-
+		logger.info("Requested partial page: " + self.request.path)
+		page_elements = self.request.path.rsplit('/', 1)
+		page_handler.static_page(self, "partials/" + page_elements[1])
             
 class AdminPage(webapp2.RequestHandler):
 	def get(self):
@@ -27,6 +29,6 @@ class AdminPage(webapp2.RequestHandler):
     
 application = webapp2.WSGIApplication([
     ('/admin', AdminPage),
-    ('/html/partials/artists.html', ArtistsPage),
+    ('/partials/.*', PartialsPage),
     ('/.*', MainPage)
 ], debug=True)

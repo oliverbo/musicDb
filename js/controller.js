@@ -1,9 +1,11 @@
 var musicDbControllers = angular.module('musicDbControllers', ['musicDbServices', 'pageModule']);
 
-musicDbControllers.controller("ArtistController", function($scope, Artist, pageInfo) {
-	console.log('LOOP');
+musicDbControllers.controller("PageHeaderController", function($scope, pageInfo) {
 	$scope.userName = pageInfo.userName;
 	$scope.logoutURI = pageInfo.logoutURI;
+});
+
+musicDbControllers.controller("ArtistController", function($scope, Artist) {
 	$scope.artists = Artist.query();
 });
 
