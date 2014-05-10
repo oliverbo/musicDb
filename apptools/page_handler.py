@@ -38,10 +38,16 @@ def static_page(request_handler, page_name, page_dir = 'html', auth_mode = AUTH_
         
         # compose page info
         page_info = {
-        	'logoutURI' : users.create_logout_url('/')
-        	}
+        	'logoutURI' : users.create_logout_url('/'),
+        	'loginURI' : users.create_login_url('/')
+        }
         if user:
         	page_info["userName"] = user.nickname()
+        	
+        if users.is_current_user_admin():
+        	page_info["isAdmin"] = True;
+        	
+        # return template
         	
         template_values = {'pageInfo' : _create_page_module(page_info)}
         	

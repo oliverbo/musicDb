@@ -3,6 +3,8 @@ var musicDbControllers = angular.module('musicDbControllers', ['musicDbServices'
 musicDbControllers.controller("PageHeaderController", function($scope, pageInfo) {
 	$scope.userName = pageInfo.userName;
 	$scope.logoutURI = pageInfo.logoutURI;
+	$scope.loginURI = pageInfo.loginURI;
+	pageInfo.isAdmin ? $scope.isAdmin = true : $scopeIsAdmin = false;
 });
 
 musicDbControllers.controller("ArtistController", function($scope, Artist) {
@@ -23,7 +25,7 @@ musicDbControllers.controller("ArtistAdminController", function($scope, Artist) 
 	}
 });
 
-musicDbControllers.controller("VenueController", function($scope, Venue) {
+musicDbControllers.controller("VenueController", function($scope, Venue, pageInfo) {
 	$scope.venues = Venue.query();
 });
 
