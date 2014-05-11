@@ -27,6 +27,7 @@ musicDbControllers.controller("ArtistAdminController", function($scope, Artist) 
 
 musicDbControllers.controller("VenueController", function($scope, Venue, pageInfo) {
 	$scope.venues = Venue.query();
+	pageInfo.isAdmin ? $scope.isAdmin = true : $scopeIsAdmin = false;
 });
 
 

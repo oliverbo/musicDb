@@ -16,7 +16,7 @@ handlers:
 - url: /js
   static_dir: js
 - url: /api/.*
-  script: datamodel.application
+  script: resource.application
 - url: /.*
   script: main.application
   

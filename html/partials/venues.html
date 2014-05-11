@@ -2,6 +2,11 @@
 <div class="row">
 	<h2 class="col-md-8">Venues Database</h2>
 </div>
+<div class="row" ng-show='isAdmin'>
+	<div class='col-md-8'>
+		<small>Add</small>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-8">
 		<table class="table table-hover">
@@ -15,7 +20,7 @@
 			</tr>
 			</thead>
 			<tbody>
-			<tr ng-repeat="venue in venues">
+			<tr ng-repeat="venue in venues" onclick="">
 				<td>{{venue.canonicalName}}</td>
 				<td>{{venue.displayName}}</td>
 				<td>{{venue.address}}</td>
