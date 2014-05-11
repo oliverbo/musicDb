@@ -12,6 +12,10 @@ musicDbApp.config(['$routeProvider',
 				templateUrl : '/partials/venues.html',
 				controller : 'VenueController'
 			}).
+			when('/venues/:venueId', {
+				templateUrl : '/partials/venuePage.html',
+				controller : 'VenuePageController'
+			}).
 			otherwise({
 				redirectTo : '/venues'
 			});

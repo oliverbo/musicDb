@@ -20,7 +20,7 @@
 			</tr>
 			</thead>
 			<tbody>
-			<tr ng-repeat="venue in venues" onclick="">
+			<tr ng-repeat="venue in venues" ng-click="showVenue(venue)">
 				<td>{{venue.canonicalName}}</td>
 				<td>{{venue.displayName}}</td>
 				<td>{{venue.address}}</td>

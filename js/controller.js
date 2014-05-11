@@ -25,13 +25,16 @@ musicDbControllers.controller("ArtistAdminController", function($scope, Artist) 
 	}
 });
 
-musicDbControllers.controller("VenueController", function($scope, Venue, pageInfo) {
+musicDbControllers.controller("VenueController", function($scope, $location, Venue, pageInfo) {
 	$scope.venues = Venue.query();
 	pageInfo.isAdmin ? $scope.isAdmin = true : $scopeIsAdmin = false;
+	$scope.showVenue = function(venue) {
+		$location.path('/venues/' + venue.canonicalName);
+	};
 });
 
 
-musicDbControllers.controller("VenueAdminController", function($scope, Venue) {
+musicDbControllers.controller("VenuePageController", function($scope, Venue) {
 	this.save = function() {
 		var venue = new Venue(
 			{
