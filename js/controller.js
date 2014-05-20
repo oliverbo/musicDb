@@ -31,11 +31,18 @@ musicDbControllers.controller("VenueController", function($scope, $location, Ven
 	$scope.showVenue = function(venue) {
 		$location.path('/venues/' + venue.canonicalName);
 	};
+	$scope.addVenue = function() {
+		$location.path('/admin/venues/0');
+	}
 });
 
 
 musicDbControllers.controller("VenuePageController", function($scope, Venue) {
-	this.save = function() {
+
+});
+
+musicDbControllers.controller("VenueAdminController", function($scope, Venue) {
+		this.save = function() {
 		var venue = new Venue(
 			{
 				canonicalName : this.canonicalName,
@@ -46,6 +53,6 @@ musicDbControllers.controller("VenuePageController", function($scope, Venue) {
 		 });
 		 venue.$save();
 	}
-});
+})
 
 

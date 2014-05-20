@@ -7,6 +7,10 @@ class DataHandler:
 	# queries all data
 	def query(self):
 		pass
+		
+	# saves an objec
+	def save(self, data):
+		pass
 				
 	# registers a new handler
 	@staticmethod

@@ -12,6 +12,10 @@ musicDbApp.config(['$routeProvider',
 				templateUrl : '/partials/venues.html',
 				controller : 'VenueController'
 			}).
+			when('/admin/venues/:venueId', {
+				templateUrl : '/partials/venuePageAdmin.html',
+				controller : 'VenueAdminController'
+			}).
 			when('/venues/:venueId', {
 				templateUrl : '/partials/venuePage.html',
 				controller : 'VenuePageController'

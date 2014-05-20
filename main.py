@@ -28,7 +28,6 @@ class AdminPage(webapp2.RequestHandler):
 		page_handler.static_page(self, "admin.html", auth_mode = page_handler.AUTH_ADMIN)        
     
 application = webapp2.WSGIApplication([
-    ('/admin', AdminPage),
     ('/partials/.*', PartialsPage),
     ('/.*', MainPage)
 ], debug=True)

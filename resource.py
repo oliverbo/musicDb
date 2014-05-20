@@ -15,15 +15,25 @@ _path_map = {
 }
 
 class ResourceHandler(webapp2.RequestHandler):
-	def get(self):
-		logger.info('API request %s', self.request.path)
+
+	def _get_data_handler(self, path):
 		page_elements = self.request.path.rsplit('/', 1)
 		data_handler_name = _path_map[page_elements[1]]
+		logger.info("Requested data handler %s", data_handler_name)
+		
 		if not data_handler_name:
-			request_handler.response.status = '404 Not Found'
+			return None
 		else:
 			logger.info("Requested data handler %s", data_handler_name)
-			data_handler = DataHandler.get_handler(_path_map[data_handler_name])
+			return DataHandler.get_handler(_path_map[data_handler_name])
+
+	def get(self):
+		logger.info('API request %s', self.request.path)
+		data_handler = self._get_data_handler(self.request.path)
+		
+		if not data_handler:
+			request_handler.response.status = '404 Not Found'
+		else:
 			result = data_handler.query()
 			r = tools.ndb_to_json(result)
 			self.response.content_type = "application/json"
@@ -31,11 +41,13 @@ class ResourceHandler(webapp2.RequestHandler):
 	
 	def post(self):
 		logger.info("received post request: %s ", self.request.body)
-		artist_data = json.loads(self.request.body)
-		logger.info("--- %s", artist_data)
-		artist = Artist(parent = musicdb.model.artist_parent_key())
-		artist.copy_data(artist_data)
-		artist.put()
+		data_handler = self._get_data_handler(self.request.path)
+		if not data_handler:
+			request_handler.response.status = '404 Not Found'
+		else:
+			data = json.loads(self.request.body)
+			logger.debug("Data: %s", data)
+			data_handler.save(data)
 
 application = webapp2.WSGIApplication([
     ('/api/.*', ResourceHandler)
