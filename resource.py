@@ -9,42 +9,75 @@ from musicdb import tools
 
 logger = logging.getLogger("resource")
 
-_path_map = {
-	'venue' : 'venue',
-	'artist' : 'artist'
+# access levels
+ACCESS_NONE = 0
+ACCESS_ALL = 1
+ACCESS_ADMIN = 2
+
+_resource_map = {
+	'/api/venue' : {'handler' : DataHandler.get_handler('venue'), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN} ,
+	'/api/artist' : {'handler' : DataHandler.get_handler('artist'), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN}
 }
 
 class ResourceHandler(webapp2.RequestHandler):
 
-	def _get_data_handler(self, path):
-		page_elements = self.request.path.rsplit('/', 1)
-		data_handler_name = _path_map[page_elements[1]]
-		logger.info("Requested data handler %s", data_handler_name)
+	def _get_resource_descriptor(self, path):
+		path_elements = self.request.path.split('/')
 		
-		if not data_handler_name:
-			return None
+		# Looping through the elements to find a matching handler
+		resource_path = ''
+		key = None
+		resource_descriptor = None
+		for p in path_elements:
+			logger.debug("Element %s", p)		
+			if not resource_descriptor:
+				resource_path += p
+				logger.debug('looking for resource descriptor for %s', resource_path)
+				if resource_path in _resource_map:
+					logger.debug("resource descriptor found for %s", resource_path)
+					resource_descriptor = _resource_map[resource_path]
+					key = ''
+				else:
+					resource_path += '/'
+			elif key == '':
+				key += p
+				logger.debug('key %s', key)
+			else:
+				key += '/' + p
+		
+		if resource_descriptor:
+			logger.info("Resource descriptor found for %s and key '%s'", resource_path, key)
+			return (resource_descriptor, key)
 		else:
-			logger.info("Requested data handler %s", data_handler_name)
-			return DataHandler.get_handler(_path_map[data_handler_name])
+			return (None, None)
 
 	def get(self):
 		logger.info('API request %s', self.request.path)
-		data_handler = self._get_data_handler(self.request.path)
+		(resource_descriptor, key) = self._get_resource_descriptor(self.request.path)
 		
-		if not data_handler:
-			request_handler.response.status = '404 Not Found'
+		if not resource_descriptor:
+			self.response.status = '400 Bad Request'
 		else:
-			result = data_handler.query()
+			data_handler = resource_descriptor['handler']
+			
+			if not key:
+				result = data_handler.query()
+			else:
+				result = data_handler.find(key)
+				if not result:
+					self.response.status = '404 Not Found'
 			r = tools.ndb_to_json(result)
+			logger.debug(r)
 			self.response.content_type = "application/json"
 			self.response.write(r)
 	
 	def post(self):
 		logger.info("received post request: %s ", self.request.body)
-		data_handler = self._get_data_handler(self.request.path)
-		if not data_handler:
-			request_handler.response.status = '404 Not Found'
+		(resource_descriptor, key) = self._get_resource_descriptor(self.request.path)
+		if not resource_descriptor:
+			self.response.status = '400 Bad Request'
 		else:
+			data_handler = resource_descriptor['handler']
 			data = json.loads(self.request.body)
 			logger.debug("Data: %s", data)
 			data_handler.save(data)

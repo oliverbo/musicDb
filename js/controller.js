@@ -27,31 +27,43 @@ musicDbControllers.controller("ArtistAdminController", function($scope, Artist) 
 
 musicDbControllers.controller("VenueController", function($scope, $location, Venue, pageInfo) {
 	$scope.venues = Venue.query();
-	pageInfo.isAdmin ? $scope.isAdmin = true : $scopeIsAdmin = false;
+	pageInfo.isAdmin ? $scope.isAdmin = true : $scope.isAdmin = false;
 	$scope.showVenue = function(venue) {
-		$location.path('/venues/' + venue.canonicalName);
+		if (pageInfo.isAdmin) {
+			$location.path('/admin/venues/' + venue.canonicalName);	
+		} else {
+			$location.path('/venues/' + venue.canonicalName);
+		}
 	};
 	$scope.addVenue = function() {
 		$location.path('/admin/venues/0');
+	};
+});
+
+
+musicDbControllers.controller("VenuePageController", function($scope, $location, $routeParams, Venue) {
+	$scope.venue = Venue.get($routeParams);
+	$scope.back = function() {$location.path('/venues');};
+});
+
+musicDbControllers.controller("VenueAdminController", function($scope, $location, $routeParams, Venue) {
+	if ($routeParams['venue'] != '0') {
+		$scope.venue = Venue.get($routeParams);
 	}
-});
 
-
-musicDbControllers.controller("VenuePageController", function($scope, Venue) {
-
-});
-
-musicDbControllers.controller("VenueAdminController", function($scope, Venue) {
-		this.save = function() {
-		var venue = new Venue(
-			{
-				canonicalName : this.canonicalName,
-			 	displayName : this.displayName,
-				address : this.address,
-				description : this.description,
-				capacity : this.capacity
-		 });
-		 venue.$save();
+	this.save = function() {
+		var venue = new Venue({
+			canonicalName : this.canonicalName,
+			displayName : this.displayName,
+			address : this.address,
+			description : this.description,
+			capacity : this.capacity
+		});
+		venue.$save();
+	}
+	
+	$scope.cancel = function() {
+		$location.path('/venues');
 	}
 })
 

@@ -6,6 +6,8 @@ import musicdb
 from musicdb.model import Artist
 from musicdb.model import Venue
 
+MAXDATA = 50
+
 # Handler for Artists
 
 logger = logging.getLogger("music_data_handler")
@@ -13,17 +15,27 @@ logger = logging.getLogger("music_data_handler")
 class VenueHandler(DataHandler):
 	def query(self):
 		venues_query = Venue.query(ancestor=musicdb.model.venue_parent_key())
-		return venues_query.fetch(10)
+		return venues_query.fetch(MAXDATA)
 	
 	def save(self, data):
 		venue = Venue(parent = musicdb.model.venue_parent_key())
 		venue.copy_data(data)
 		venue.put()
 		
+	def find(self, key):
+		"""Returns a single venue identified with the key or None if it cannot be found"""
+		venues_query = Venue.query(Venue.canonicalName == key)
+		venues = venues_query.fetch(1)
+		logger.info('Found venue for key %s: %s', key, venues)
+		if (len(venues) == 0):
+			return None
+		else:
+			return venues[0]
+		
 class ArtistHandler(DataHandler):
 	def query(self):
 		artists_query = Artist.query(ancestor=musicdb.model.artist_parent_key())
-		return artists_query.fetch(10)
+		return artists_query.fetch(MAXDATA)
 		
 	def save(self, data):
 		artist = Artist(parent = musicdb.model.artist_parent_key())

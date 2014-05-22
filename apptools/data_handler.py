@@ -1,4 +1,4 @@
-# Handlers NDB data access
+# Base class for handlers for NDB data access
 
 _handler_map = {}
 
@@ -6,6 +6,10 @@ class DataHandler:
 	
 	# queries all data
 	def query(self):
+		pass
+		
+	def find(self, key):
+		"""Finds a record uniquely identified by key or None if the key doesn't exist"""
 		pass
 		
 	# saves an objec
