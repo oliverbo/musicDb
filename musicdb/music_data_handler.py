@@ -17,10 +17,17 @@ class VenueHandler(DataHandler):
 		venues_query = Venue.query(ancestor=musicdb.model.venue_parent_key())
 		return venues_query.fetch(MAXDATA)
 	
-	def save(self, data):
-		venue = Venue(parent = musicdb.model.venue_parent_key())
+	def save(self, data, key = None):
+		"""Saves a venue. If the key does not exist, a new venue is created"""
+		venue = None
+		if key:
+			venue = self.find(key)
+		
+		if not venue:
+			venue = Venue(parent = musicdb.model.venue_parent_key())			
+			
 		venue.copy_data(data)
-		venue.put()
+		venue.put() 
 		
 	def find(self, key):
 		"""Returns a single venue identified with the key or None if it cannot be found"""
@@ -31,13 +38,18 @@ class VenueHandler(DataHandler):
 			return None
 		else:
 			return venues[0]
+			
+	def delete(self, key):
+		venue = self.find(key)
+		if venue:
+			venue.key.delete()
 		
 class ArtistHandler(DataHandler):
 	def query(self):
 		artists_query = Artist.query(ancestor=musicdb.model.artist_parent_key())
 		return artists_query.fetch(MAXDATA)
 		
-	def save(self, data):
+	def save(self, data, key = None):
 		artist = Artist(parent = musicdb.model.artist_parent_key())
 		artist.copy_data(data)
 		artist.put()

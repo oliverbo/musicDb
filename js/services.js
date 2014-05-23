@@ -11,10 +11,8 @@ musicDbServices.factory('Artist', ['$resource',
 
 musicDbServices.factory('Venue', ['$resource',
 	function($resource) {
-		return $resource('/api/venue/:venue', {}, {
-			query: {method:'GET', url:'/api/venue' , isArray:true},
-			get: {method:'GET'},
-			save: {method:'POST'}
+		return $resource('/api/venue/:venue', {venue : "@canonicalName"}, {
+			query: {method:'GET', url:'/api/venue' , isArray:true}
 		});
 	}
 ]);

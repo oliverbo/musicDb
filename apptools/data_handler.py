@@ -12,8 +12,12 @@ class DataHandler:
 		"""Finds a record uniquely identified by key or None if the key doesn't exist"""
 		pass
 		
-	# saves an objec
-	def save(self, data):
+	# saves an object
+	def save(self, data, key = None):
+		pass
+		
+	def delete(self, key):
+		"""Deletes a record identified by the key"""
 		pass
 				
 	# registers a new handler

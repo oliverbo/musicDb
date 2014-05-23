@@ -80,7 +80,16 @@ class ResourceHandler(webapp2.RequestHandler):
 			data_handler = resource_descriptor['handler']
 			data = json.loads(self.request.body)
 			logger.debug("Data: %s", data)
-			data_handler.save(data)
+			data_handler.save(data, key)
+			
+	def delete(self):
+		logger.info("received delete request: %s ", self.request.body)
+		(resource_descriptor, key) = self._get_resource_descriptor(self.request.path)
+		if not resource_descriptor or not key:
+			self.response.status = '400 Bad Request'
+		else:
+			data_handler = resource_descriptor['handler']
+			data_handler.delete(key)
 
 application = webapp2.WSGIApplication([
     ('/api/.*', ResourceHandler)
