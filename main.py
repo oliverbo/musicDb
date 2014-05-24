@@ -4,7 +4,9 @@ import logging
 import apptools
 
 from google.appengine.api import users
+from musicdb import tools
 from apptools import page_handler
+from musicdb.music_data_handler import VenueHandler
 
 import webapp2
 import jinja2
@@ -22,12 +24,22 @@ class PartialsPage(webapp2.RequestHandler):
 		logger.info("Requested partial page: " + self.request.path)
 		page_elements = self.request.path.rsplit('/', 1)
 		page_handler.static_page(self, "partials/" + page_elements[1])
-            
-class AdminPage(webapp2.RequestHandler):
+
+class ExportPage(webapp2.RequestHandler):
 	def get(self):
-		page_handler.static_page(self, "admin.html", auth_mode = page_handler.AUTH_ADMIN)        
+		logger.info("Export requested")
+		if users.is_current_user_admin():
+			# This is done this way until a central handler repository is implemented
+			venue_handler = VenueHandler()
+			venues = venue_handler.export()
+			self.response.content_type = 'text/plain'
+			self.response.write(tools.ndb_to_json(venues))
+		else:
+			logger.warn("Unauthorized export request")
+			self.response.status = "403 Forbidden"
     
 application = webapp2.WSGIApplication([
     ('/partials/.*', PartialsPage),
+    ('/export', ExportPage),
     ('/.*', MainPage)
 ], debug=True)

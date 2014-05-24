@@ -43,6 +43,9 @@ class VenueHandler(DataHandler):
 		venue = self.find(key)
 		if venue:
 			venue.key.delete()
+			
+	def export(self):
+		return self.query()
 		
 class ArtistHandler(DataHandler):
 	def query(self):

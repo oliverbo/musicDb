@@ -25,7 +25,7 @@ musicDbControllers.controller("ArtistAdminController", function($scope, Artist) 
 	}
 });
 
-musicDbControllers.controller("VenueController", function($scope, $location, Venue, pageInfo) {
+musicDbControllers.controller("VenueController", function($scope, $location, $modal, Venue, pageInfo) {
 	$scope.venues = Venue.query();
 	pageInfo.isAdmin ? $scope.isAdmin = true : $scope.isAdmin = false;
 	$scope.showVenue = function(venue) {
@@ -38,6 +38,14 @@ musicDbControllers.controller("VenueController", function($scope, $location, Ven
 	$scope.addVenue = function() {
 		$location.path('/admin/venues/0');
 	};
+			
+	$scope.export = function() {
+		$modal.open({
+			templateUrl: 'export.html',
+			controller: OkCancelController,
+			size: 'sm'
+		});
+	}
 });
 
 
@@ -70,7 +78,7 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 	$scope.delete = function(venue) {
 		var modalInstance = $modal.open({
 			templateUrl: 'deleteConfirm.html',
-			controller: DeleteConfirmController,
+			controller: OkCancelController,
 			size: 'sm'
 		});
 	
@@ -84,7 +92,7 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 	}
 })
 
-var DeleteConfirmController = function ($scope, $modalInstance) {
+var OkCancelController = function ($scope, $modalInstance) {
   $scope.ok = function () {
     $modalInstance.close('ok');
   };

@@ -3,8 +3,8 @@ import json
 import logging
 import musicdb.model
 from apptools.data_handler import DataHandler
-from musicdb.model import Artist
-from musicdb.model import Venue
+from musicdb.music_data_handler import VenueHandler
+from musicdb.music_data_handler import ArtistHandler
 from musicdb import tools
 
 logger = logging.getLogger("resource")
@@ -15,8 +15,8 @@ ACCESS_ALL = 1
 ACCESS_ADMIN = 2
 
 _resource_map = {
-	'/api/venue' : {'handler' : DataHandler.get_handler('venue'), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN} ,
-	'/api/artist' : {'handler' : DataHandler.get_handler('artist'), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN}
+	'/api/venue' : {'handler' : VenueHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN} ,
+	'/api/artist' : {'handler' : ArtistHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN}
 }
 
 class ResourceHandler(webapp2.RequestHandler):
