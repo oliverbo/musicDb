@@ -3,6 +3,7 @@ import json
 import logging
 import musicdb.model
 from apptools.data_handler import DataHandler
+from google.appengine.api import users
 from musicdb.music_data_handler import VenueHandler
 from musicdb.music_data_handler import ArtistHandler
 from musicdb import tools
@@ -15,8 +16,8 @@ ACCESS_ALL = 1
 ACCESS_ADMIN = 2
 
 _resource_map = {
-	'/api/venue' : {'handler' : VenueHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN} ,
-	'/api/artist' : {'handler' : ArtistHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN}
+	'/api/venue' : {'handler' : VenueHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN, 'delete' : ACCESS_ADMIN} ,
+	'/api/artist' : {'handler' : ArtistHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN, 'delete' : ACCESS_ADMIN}
 }
 
 class ResourceHandler(webapp2.RequestHandler):
@@ -58,18 +59,24 @@ class ResourceHandler(webapp2.RequestHandler):
 		if not resource_descriptor:
 			self.response.status = '400 Bad Request'
 		else:
-			data_handler = resource_descriptor['handler']
-			
-			if not key:
-				result = data_handler.query()
+			permission = resource_descriptor['get']
+			if permission == ACCESS_NONE or (permission == ACCESS_ADMIN and not users.is_current_user_admin()):
+				self.response.status = '403 Not Authorized'
 			else:
-				result = data_handler.find(key)
+				data_handler = resource_descriptor['handler']
+			
+				if not key:
+					result = data_handler.query()
+					logger.debug('Result: %s', result)
+				else:
+					result = data_handler.find(key)
 				if not result:
 					self.response.status = '404 Not Found'
-			r = tools.ndb_to_json(result)
-			logger.debug(r)
-			self.response.content_type = "application/json"
-			self.response.write(r)
+				else:
+					r = tools.ndb_to_json(result)
+					logger.debug(r)
+					self.response.content_type = "application/json"
+					self.response.write(r)
 	
 	def post(self):
 		logger.info("received post request: %s ", self.request.body)
@@ -77,10 +84,14 @@ class ResourceHandler(webapp2.RequestHandler):
 		if not resource_descriptor:
 			self.response.status = '400 Bad Request'
 		else:
-			data_handler = resource_descriptor['handler']
-			data = json.loads(self.request.body)
-			logger.debug("Data: %s", data)
-			data_handler.save(data, key)
+			permission = resource_descriptor['post']
+			if permission == ACCESS_NONE or (permission == ACCESS_ADMIN and not users.is_current_user_admin()):
+				self.response.status = '403 Not Authorized'
+			else:
+				data_handler = resource_descriptor['handler']
+				data = json.loads(self.request.body)
+				logger.debug("Data: %s", data)
+				data_handler.save(data, key)
 			
 	def delete(self):
 		logger.info("received delete request: %s ", self.request.body)
@@ -88,8 +99,12 @@ class ResourceHandler(webapp2.RequestHandler):
 		if not resource_descriptor or not key:
 			self.response.status = '400 Bad Request'
 		else:
-			data_handler = resource_descriptor['handler']
-			data_handler.delete(key)
+			permission = resource_descriptor['delete']
+			if permission == ACCESS_NONE or (permission == ACCESS_ADMIN and not users.is_current_user_admin()):
+				self.response.status = '403 Not Authorized'
+			else:
+				data_handler = resource_descriptor['handler']
+				data_handler.delete(key)
 
 application = webapp2.WSGIApplication([
     ('/api/.*', ResourceHandler)
