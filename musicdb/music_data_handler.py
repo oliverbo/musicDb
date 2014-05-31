@@ -1,6 +1,7 @@
 # Data Handlers for Music DB
 
 import logging
+from google.appengine.ext import ndb
 from apptools.data_handler import DataHandler
 import musicdb
 from musicdb.model import Artist
@@ -44,8 +45,21 @@ class VenueHandler(DataHandler):
 		if venue:
 			venue.key.delete()
 			
-	def export(self):
+	def delete_all(self):
+		keys = []
+		venues = self.query()
+		for venue in venues:
+			keys.append(venue.key)
+		logger.info("deleting %s", keys)
+		ndb.delete_multi(keys)
+			
+	def export_data(self):
 		return self.query()
+		
+	def import_data(self, data):
+		logger.debug("importing %s", data)
+		for venue in data:
+			self.save(venue)
 		
 class ArtistHandler(DataHandler):
 	def query(self):

@@ -2,9 +2,11 @@ import os
 import urllib
 import logging
 import apptools
+import json
 
 from google.appengine.api import users
 from musicdb import tools
+from musicdb.model import Venue
 from apptools import page_handler
 from musicdb.music_data_handler import VenueHandler
 
@@ -31,15 +33,40 @@ class ExportPage(webapp2.RequestHandler):
 		if users.is_current_user_admin():
 			# This is done this way until a central handler repository is implemented
 			venue_handler = VenueHandler()
-			venues = venue_handler.export()
+			venues = venue_handler.export_data()
 			self.response.content_type = 'text/plain'
 			self.response.write(tools.ndb_to_json(venues))
 		else:
 			logger.warn("Unauthorized export request")
 			self.response.status = "403 Forbidden"
-    
+			
+class ImportPage(webapp2.RequestHandler):
+	def post(self):
+		if users.is_current_user_admin():
+			logger.info("Importing data file...")
+			json_data = self.request.get('uploadFile')
+			logger.debug(json_data)
+			venue_handler = VenueHandler()
+			# delete all existing venues
+			venue_handler.delete_all()
+			
+			# convert data to venues
+			data = json.loads(json_data)
+			venues = []
+			for v in data:
+				logger.debug("--- %s", v)
+				venues.append(v)
+			
+			# import new data
+			venue_handler.import_data(venues)
+			self.response.write('<html><body>Import successful</body></html>')
+		else:
+			logger.warn("Unauthorized import request")
+			self.response.status = "403 Forbidden"
+		    
 application = webapp2.WSGIApplication([
     ('/partials/.*', PartialsPage),
     ('/export', ExportPage),
+    ('/import', ImportPage),
     ('/.*', MainPage)
 ], debug=True)

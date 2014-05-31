@@ -19,5 +19,14 @@ class DataHandler:
 		"""Deletes a record identified by the key"""
 		pass
 		
-	def export(self):
+	def delete_all(self):
+		"""Deletes all records in the data store"""
+		pass
+		
+	def export_data(self):
 		"""Exports the all records"""
+		pass
+		
+	def import_data(self, data):
+		"""Imports the records in the JSON data structure"""
+		pass

@@ -46,6 +46,18 @@ musicDbControllers.controller("VenueController", function($scope, $location, $mo
 			size: 'sm'
 		});
 	}
+	
+	$scope.import = function() {
+		var modalInstance = $modal.open({
+			templateUrl: 'import.html',
+			controller: ImportController,
+			size: 'sm'
+		})
+		
+		modalInstance.result.then(function(file) {
+			console.log('Upload ' + file);
+		})
+	}
 });
 
 
@@ -91,6 +103,17 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 		});
 	}
 })
+
+var ImportController = function ($scope, $modalInstance) {
+  $scope.upload = function (file) {
+  	console.log("----> " + file);
+    $modalInstance.close(file);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
 
 var OkCancelController = function ($scope, $modalInstance) {
   $scope.ok = function () {

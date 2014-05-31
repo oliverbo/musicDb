@@ -5,7 +5,8 @@
 <div class="row" ng-show='isAdmin'>
 	<div class='col-md-8'>
 		<small><a href="" ng-click="addVenue()">Add</a></small> |
-		<small><a href="" ng-click="export()">Export</a></small>
+		<small><a href="" ng-click="export()">Export</a></small> |
+		<small><a href="" ng-click="import()">Import</a></small>
 	</div>
 </div>
 <div class="row">
@@ -30,12 +31,30 @@
 		</table>
 	</div>
 </div>
+
 <script type="text/ng-template" id="export.html">
 	<div class="modal-header">
     	<h3 class="modal-title">Export Data</h3>
     </div>
     <div class="modal-body">
     	<a href="/export" target="_blank">Download</a>
+    </div>	
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="cancel()">Close</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="import.html">
+	<div class="modal-header">
+    	<h3 class="modal-title">Import Data</h3>
+    </div>
+    <div class="modal-body">
+    	<form role="form" action="/import" target="_blank" method="post" enctype="multipart/form-data">
+    		<div class="form-group">
+    			<input type="file" name="uploadFile" />
+    		</div>
+    		<button type="submit" class="btn btn-default">Import</button>
+    	</form>
     </div>	
     <div class="modal-footer">
         <button class="btn btn-warning" ng-click="cancel()">Close</button>
