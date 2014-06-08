@@ -1,35 +1,88 @@
 {% raw %}
 <div class="row">
-	<div class="col-md-4">
-		<h2>Music Venues Admin</h2>
-	 	<div>
-			<form role="form">
-		  		<div class="form-group">
-					<label>Canonical Name</label>
-					<input type="text" ng-model="venue.canonicalName" class="form-control">
-				</div>
-		  		<div class="form-group">
-					<label>Display Name</label>
-					<input type="text" ng-model="venue.displayName" class="form-control">
-				</div>
-		  		<div class="form-group">
-					<label>Address:</label>
-					<input type="text" ng-model="venue.address" class="form-control">
-				</div>
-		  		<div class="form-group">
-			  		<label>Description:</label>
-					<input type="text" ng-model="venue.description" class="form-control">
-				</div>
-				<div class="form-group">
-					<label>Capacity:</label>
-					<input type="text" ng-model="venue.capacity" class="form-control">
-				</div>
-		  		<button ng-click="saveVenue(venue)" class="btn btn-default">Save</button>
-		  		<button ng-click="delete(venue)" class="btn btn-default">Delete</button>
-		  		<button ng-click="cancel()" class="btn btn-default">Back</button>		  		
-		  	</form>
+	<div class="col-md-8"><h2>Music DB Admin</h2></div>
+</div>
+<form role="form">
+	<div class="row">
+		<div class="col-md-4">			
+	  		<div class="form-group">
+				<label>Unique Name</label>
+				<input type="text" ng-model="venue.uniqueName" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Display Name</label>
+				<input type="text" ng-model="venue.displayName" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Address:</label>
+				<input type="text" ng-model="venue.address" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Zip Code:</label>
+				<input type="text" ng-model="venue.zipCode" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>City:</label>
+				<input type="text" ng-model="venue.city" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>State:</label>
+				<input type="text" ng-model="venue.state" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Neighborhood:</label>
+				<input type="text" ng-model="venue.neighborhood" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Phone Number:</label>
+				<input type="text" ng-model="venue.phoneNumber" class="form-control"/>
+			</div>
+		</div>
+	    <div class="col-md-4">
+	    	<div class="form-group">
+				<label>Website:</label>
+				<input type="text" ng-model="venue.website" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Twitter:</label>
+				<input type="text" ng-model="venue.twitterName" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label>Facebook URI:</label>
+				<input type="text" ng-model="venue.facebookURI" class="form-control"/>
+			</div>
+	    	<div class="form-group">
+				<label>Booking:</label>
+				<input type="text" ng-model="venue.booking" class="form-control"/>
+			</div>
+	    	<div class="form-group">
+				<label>Capacity:</label>
+				<input type="text" ng-model="venue.capacity" class="form-control"/>
+			</div>
+	    	<div class="form-group">
+			  	<label>Description:</label>
+				<textarea ng-model="venue.description" rows="3" class="form-control"></textarea>
+			</div>
+			<div class="form-group">
+			  	<label>Price Level:</label>
+				<input type="text" ng-model="venue.priceLevel" class="form-control"/>
+			</div>
+	    	<div class="form-group">
+				<label>Special Tips</label>
+				<textarea ng-model="venue.specialTips" rows="3" class="form-control"></textarea>
+			</div>
 	    </div>
-  	</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<button ng-click="saveVenue(venue)" class="btn btn-default">Save</button>
+			<button ng-click="delete(venue)" class="btn btn-default">Delete</button>
+			<button ng-click="cancel()" class="btn btn-default">Back</button>		  				  
+		</div>
+	</div>
+</form>
+<div class="row">
+	<div class="col-md-8"><hr /></div>
 </div>
 <script type="text/ng-template" id="deleteConfirm.html">
 	<div class="modal-header">

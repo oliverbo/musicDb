@@ -32,7 +32,7 @@ class VenueHandler(DataHandler):
 		
 	def find(self, key):
 		"""Returns a single venue identified with the key or None if it cannot be found"""
-		venues_query = Venue.query(Venue.canonicalName == key)
+		venues_query = Venue.query(Venue.uniqueName == key)
 		venues = venues_query.fetch(1)
 		logger.info('Found venue for key %s: %s', key, venues)
 		if (len(venues) == 0):

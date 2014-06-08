@@ -17,7 +17,7 @@ musicDbControllers.controller("ArtistAdminController", function($scope, Artist) 
 	this.save = function() {
 		var artist = new Artist(
 			{
-				canonicalName : this.canonicalName,
+				uniqueName : this.uniqueName,
 			 	displayName : this.displayName,
 			 	startYear : this.startYear
 		 });
@@ -30,9 +30,9 @@ musicDbControllers.controller("VenueController", function($scope, $location, $mo
 	pageInfo.isAdmin ? $scope.isAdmin = true : $scope.isAdmin = false;
 	$scope.showVenue = function(venue) {
 		if (pageInfo.isAdmin) {
-			$location.path('/admin/venues/' + venue.canonicalName);	
+			$location.path('/admin/venues/' + venue.uniqueName);	
 		} else {
-			$location.path('/venues/' + venue.canonicalName);
+			$location.path('/venues/' + venue.uniqueName);
 		}
 	};
 	$scope.addVenue = function() {
@@ -72,13 +72,7 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 	}
 
 	$scope.saveVenue = function(venue) {	
-		var venueResource = new Venue({
-			canonicalName : venue.canonicalName,
-			displayName : venue.displayName,
-			address : venue.address,
-			description : venue.description,
-			capacity : venue.capacity
-		});
+		var venueResource = new Venue(venue);
 		venueResource.$save();
 		$scope.venue = new Venue();
 	}
@@ -96,7 +90,7 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 	
 		modalInstance.result.then(function(ok) {
 			var venueResource = new Venue({
-				canonicalName : venue.canonicalName
+				uniqueName : venue.uniqueName
 			});
 			venueResource.$delete()
 			$location.path('/venues');	
