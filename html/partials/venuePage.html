@@ -5,15 +5,28 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-8"><h2>{{ venue.displayName}}</h2></div>
+	<div class="col-md-8"><h2>{{ venue.displayName }}</h2></div>
 </div>
 <div class="row">
 	 <div class="col-md-4">
-	 	<p><strong>Address</strong>: {{ venue.address }}</p>					
-		<p><strong>Capacity</strong>: {{ venue.capacity}}</p>	  		  		
+	 	<p><strong>Address</strong>:<br/>
+	 	{{ venue.address }}<br />
+	 	{{ venue.city }}, {{ venue.state }} {{ venue.zipCode }}</p>
+	 	<p><strong>Neighborhood:</strong>: {{ venue.neighborhood }}</p>
+		<p><strong>Capacity</strong>: {{ venue.capacity }}</p>
+		<p><strong>Phone</strong>: {{ venue.phoneNumber }}</p>
+		<p><strong>Web</strong>: <a href="{{ venue.website }}">{{ venue.website }}</a></p>
+		<p><strong>Twitter</strong>: <a href="http://twitter.com/{{ venue.twitterName }}" target="_blank">@{{ venue.twitterName }}</a></p>
+		<p><strong>Facebook</strong>: <a href="{{ venue.facebookURI }}">{{ venue.facebookURI }}</a></p>
 	 </div>
 	 <div class="col-md-4">
-	 	<p><strong>Description</strong>: {{ venue.description }}</p>
+	 	<p><strong>Price Level</strong>: {{ venue.priceLevel }}</p>
+	 	<p><strong>Description</strong>:<br>
+	 	{{ venue.description }}</p>
+	 	<p><strong>Special Tip</strong>:<br>
+	 	{{ venue.specialTip }}</p>
+	 	<p><strong>booking</strong>:<br>
+	 	{{ venue.booking }}</p>
 	 </div>
 </div>
 {% endraw %}

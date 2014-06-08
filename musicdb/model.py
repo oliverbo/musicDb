@@ -49,6 +49,7 @@ class Venue(ModelBase):
             self.address = venue_data['address']
             self.zipCode = venue_data['zipCode']
             self.city = venue_data['city']
+            self.state = venue_data['state']
             self.neighborhood = venue_data['neighborhood']
             self.website = venue_data['website']
             self.twitterName = venue_data['twitterName']
@@ -58,3 +59,4 @@ class Venue(ModelBase):
             self.description = venue_data['description']
             self.capacity = int(venue_data['capacity'])
             self.booking = venue_data['booking']
+            self.specialTip = venue_data['specialTip']
