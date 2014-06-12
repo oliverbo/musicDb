@@ -20,6 +20,29 @@ _resource_map = {
 	'/api/artist' : {'handler' : ArtistHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN, 'delete' : ACCESS_ADMIN}
 }
 
+ERR_VALIDATION = 1000
+
+ERROR_CODES = {
+	ERR_VALIDATION : "Validation Error"
+}
+
+class ErrorResponse:
+	errorCode = 0 
+	errorMessage = None
+	details = None
+	
+	def __init__(self, error_code, details = None, error_message = None):
+		self.errorCode = error_code
+		if details:
+			self.details = details
+		if error_message:
+			self.errorMessage = error_message
+		elif error_code in ERROR_CODES:
+			self.errorMessage = ERROR_CODES[error_code]
+			
+	def to_json(self):
+		return tools.to_json(self)
+
 class ResourceHandler(webapp2.RequestHandler):
 
 	def _get_resource_descriptor(self, path):
@@ -91,7 +114,14 @@ class ResourceHandler(webapp2.RequestHandler):
 				data_handler = resource_descriptor['handler']
 				data = json.loads(self.request.body)
 				logger.debug("Data: %s", data)
-				data_handler.save(data, key)
+				try:
+					data_handler.save(data, key)
+				except musicdb.model.ValidationError as e:
+					self.response.status = '400 Bad Request'
+					self.response.content_type = "application/json"
+					response_message = ErrorResponse(ERR_VALIDATION, e.result).to_json()
+					logger.debug("Error message: %s", response_message)
+					self.response.write(response_message)
 			
 	def delete(self):
 		logger.info("received delete request: %s ", self.request.body)
