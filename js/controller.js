@@ -73,7 +73,9 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 
 	$scope.saveVenue = function(venue) {	
 		var venueResource = new Venue(venue);
-		venueResource.$save();
+		venueResource.$save(function() {}, function(error) {
+			console.log("erreur " + error.data.errorMessage);
+		});
 		$scope.venue = new Venue();
 	}
 	
