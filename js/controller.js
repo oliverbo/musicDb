@@ -64,10 +64,12 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 		}, function(error) {
 			$scope.alerts.length = 0;
 			$scope.alerts[0] = { type : "danger", message : error.data.errorMessage };
-			for (i = 0; i < error.data.details.length; i++) {
-				errorDetails = error.data.details[i];
-				$scope.alerts[i+1] = { type : "danger", message : errorDetails.field + ": " + errorDetails.errorMessage };
-			}			
+			if (error.data.details) {
+				for (i = 0; i < error.data.details.length; i++) {
+					errorDetails = error.data.details[i];
+					$scope.alerts[i+1] = { type : "danger", message : errorDetails.field + ": " + errorDetails.errorMessage };
+				}
+			}
 		});
 	}
 	
@@ -77,6 +79,7 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 	}
 	
 	$scope.delete = function(venue) {
+		$scope.alerts.length = 0;
 		var modalInstance = $modal.open({
 			templateUrl: 'deleteConfirm.html',
 			controller: OkCancelController,

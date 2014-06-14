@@ -5,7 +5,6 @@ import musicdb.model
 from apptools.data_handler import DataHandler
 from google.appengine.api import users
 from musicdb.music_data_handler import VenueHandler
-from musicdb.music_data_handler import ArtistHandler
 from musicdb import tools
 
 logger = logging.getLogger("resource")
@@ -16,14 +15,15 @@ ACCESS_ALL = 1
 ACCESS_ADMIN = 2
 
 _resource_map = {
-	'/api/venue' : {'handler' : VenueHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN, 'delete' : ACCESS_ADMIN} ,
-	'/api/artist' : {'handler' : ArtistHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN, 'delete' : ACCESS_ADMIN}
+	'/api/venue' : {'handler' : VenueHandler(), 'get' : ACCESS_ALL, 'post' : ACCESS_ADMIN, 'delete' : ACCESS_ADMIN}
 }
 
 ERR_VALIDATION = 1000
+ERR_DELETE = 1001
 
 ERROR_CODES = {
-	ERR_VALIDATION : "Validation Error"
+	ERR_VALIDATION : "Data Validation Error",
+	ERR_DELETE: "Record cannot be deleted"
 }
 
 class ErrorResponse:
@@ -134,7 +134,14 @@ class ResourceHandler(webapp2.RequestHandler):
 				self.response.status = '403 Not Authorized'
 			else:
 				data_handler = resource_descriptor['handler']
-				data_handler.delete(key)
+				try:
+					data_handler.delete(key)
+				except:
+					self.response.status = '400 Bad Request'
+					self.response.content_type = "application/json"
+					response_message = ErrorResponse(ERR_DELETE, e.result).to_json()
+					logger.debug("Error message: %s", response_message)
+					self.response.write(response_message)
 
 application = webapp2.WSGIApplication([
     ('/api/.*', ResourceHandler)

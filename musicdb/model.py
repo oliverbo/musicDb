@@ -4,9 +4,11 @@ import json
 from google.appengine.ext import ndb
 
 ERR_INVALID_NUMBER = 1000
+ERR_DATA_MISSING = 1001
 
 VALIDATION_ERRORS = {
-	ERR_INVALID_NUMBER : "Invalid Number"
+	ERR_INVALID_NUMBER : "Invalid Number",
+	ERR_DATA_MISSING : "Mandatory field missing"
 }
 
 class ValidationError(Exception):
@@ -34,26 +36,12 @@ class ModelBase(ndb.Model):
 	uniqueName = ndb.StringProperty()
 	displayName = ndb.StringProperty()
 	
-	def validate(self, data):
+	def validate(self):
 		pass
 
-	def copy_data(self, data_dict):
+	def copy_data_and_validate(self, data_dict):
 		pass
-		
-def artist_parent_key():
-	return ndb.Key('Base', 'artist')
-    
-# An artist model
-class Artist(ModelBase):
-	model_name = 'ARTIST'
-	startYear = ndb.StringProperty()
-
-	def copy_data(self, artist_data):
-		if (artist_data):
-			self.uniqueName = artist_data['uniqueName']
-			self.displayName = artist_data['displayName']
-			self.startYear = artist_data['startYear']
-            
+                
 def venue_parent_key():
 	return ndb.Key('Base', 'venue')
     
@@ -74,34 +62,68 @@ class Venue(ModelBase):
 	capacity = ndb.IntegerProperty()
 	booking = ndb.StringProperty()
         
-	def copy_data(self, data_dict):
+	def copy_data_and_validate(self, data_dict):
 		result = []
 		
-		if (data_dict):
-			self.uniqueName = data_dict['uniqueName']
-			self.displayName = data_dict['displayName']
-			self.address = data_dict['address']
-			self.zipCode = data_dict['zipCode']
-			self.city = data_dict['city']
-			self.state = data_dict['state']
-			self.neighborhood = data_dict['neighborhood']
-			self.website = data_dict['website']
-			self.twitterName = data_dict['twitterName']
-			self.facebookURI = data_dict['facebookURI']
-			self.phoneNumber = data_dict['phoneNumber']
-			self.priceLevel = int(data_dict['priceLevel'])
-			self.description = data_dict['description']
+		if (data_dict):		
+			if ('uniqueName' in data_dict):
+				self.uniqueName = data_dict['uniqueName']
+			else:
+				result.append(ValidationResult(ERR_DATA_MISSING, "uniqueName"))
+				
+			if ('displayName' in data_dict):
+				self.displayName = data_dict['displayName']
+			else:
+				result.append(ValidationResult(ERR_DATA_MISSING, "displayName"))
+			
+			if ('address' in data_dict):				
+				self.address = data_dict['address']
+				
+			if ("zipCode" in data_dict):
+				self.zipCode = data_dict['zipCode']
+				
+			if ("city" in data_dict):
+				self.city = data_dict['city']
+				
+			if ("state" in data_dict):	
+				self.state = data_dict['state']
+			
+			if ("neighborhood" in data_dict):		
+				self.neighborhood = data_dict['neighborhood']
+				
+			if ("website" in data_dict):
+				self.website = data_dict['website']
+				
+			if ("twitterName" in data_dict):
+				self.twitterName = data_dict['twitterName']
+				
+			if ("facebookURI" in data_dict):
+				self.facebookURI = data_dict['facebookURI']
+	
+			if ("phoneNumber" in data_dict):
+				self.phoneNumber = data_dict['phoneNumber']
+			
+			if ("priceLevel" in data_dict):
+				try:
+					self.priceLevel = int(data_dict['priceLevel'])
+				except:
+					result.append(ValidationResult(ERR_INVALID_NUMBER, 'priceLevel'))
+				
+			if ("description" in data_dict):
+				self.description = data_dict['description']
 			
 			try:            
 				self.capacity = int(data_dict['capacity'])
 			except ValueError:
 				result.append(ValidationResult(ERR_INVALID_NUMBER, 'capacity'))
 
-			self.booking = data_dict['booking']
-			self.specialTip = data_dict['specialTip']
+			if ("booking" in data_dict):
+				self.booking = data_dict['booking']
+				
+			if ("specialTip" in data_dict):	
+				self.specialTip = data_dict['specialTip']
+		else:
+			result.append(ValidationResult(ERR_DATA_MISSING, error_message="Empty record" ))
 			
-			if len(result) > 0:
-				raise ValidationError(result)
-		
-	def validate(self, data):
-		return true
+		if len(result) > 0:
+			raise ValidationError(result)
