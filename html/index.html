@@ -16,25 +16,24 @@
 	</head>
 	  
 	{% raw %}
-	<body>
+	<body ng-controller = 'PageHeaderController'>
+		<alert ng-repeat="alert in alerts" type="alert.type">{{ alert.message }}</alert>
 		<div class="container">
-			<div ng-controller = 'PageHeaderController'>
-				<div class='row'>
-					<div class='col-md-8' ng-show='userName'>
-						<small>User Name: {{ userName }} | <a href="{{logoutURI}}">logout</a></small>
-					</div>
-					<div class='col-md-8' ng-hide='userName'>
-						<small><a href="{{loginURI}}">Login</a></small>
-					</div>
+			<div class='row'>
+				<div class='col-md-8' ng-show='userName'>
+					<small>User Name: {{ userName }} | <a href="{{logoutURI}}">logout</a></small>
 				</div>
-				<div class='row'>
-					<div class='col-md-8'>
-						<h1>Music DB</h1>
-					</div>
+				<div class='col-md-8' ng-hide='userName'>
+					<small><a href="{{loginURI}}">Login</a></small>
 				</div>
 			</div>
+			<div class='row'>
+				<div class='col-md-8'>
+					<h1>Music DB</h1>
+				</div>
+			</div>		
 			<div ng-view></div>
-		</div>	 
+		</div>
   </body>
   {% endraw %}
 </html>

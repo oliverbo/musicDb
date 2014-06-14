@@ -5,24 +5,8 @@ musicDbControllers.controller("PageHeaderController", function($scope, pageInfo)
 	$scope.logoutURI = pageInfo.logoutURI;
 	$scope.loginURI = pageInfo.loginURI;
 	pageInfo.isAdmin ? $scope.isAdmin = true : $scopeIsAdmin = false;
-});
-
-musicDbControllers.controller("ArtistController", function($scope, Artist) {
-	$scope.artists = Artist.query();
-});
-
-musicDbControllers.controller("ArtistAdminController", function($scope, Artist) {
-	$scope.adminName = "Admin";
-
-	this.save = function() {
-		var artist = new Artist(
-			{
-				uniqueName : this.uniqueName,
-			 	displayName : this.displayName,
-			 	startYear : this.startYear
-		 });
-		 artist.$save();	 
-	}
+	
+	$scope.alerts = [];
 });
 
 musicDbControllers.controller("VenueController", function($scope, $location, $modal, Venue, pageInfo) {
@@ -73,13 +57,22 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 
 	$scope.saveVenue = function(venue) {	
 		var venueResource = new Venue(venue);
-		venueResource.$save(function() {}, function(error) {
-			console.log("erreur " + error.data.errorMessage);
+		venueResource.$save(function(success) {
+			$scope.alerts.length = 0;
+			$scope.alerts[0] = { type : "success", message : "Venue saved"};
+			$scope.venue = new Venue();	
+		}, function(error) {
+			$scope.alerts.length = 0;
+			$scope.alerts[0] = { type : "danger", message : error.data.errorMessage };
+			for (i = 0; i < error.data.details.length; i++) {
+				errorDetails = error.data.details[i];
+				$scope.alerts[i+1] = { type : "danger", message : errorDetails.field + ": " + errorDetails.errorMessage };
+			}			
 		});
-		$scope.venue = new Venue();
 	}
 	
 	$scope.cancel = function() {
+		$scope.alerts.length = 0;
 		$location.path('/venues');
 	}
 	
