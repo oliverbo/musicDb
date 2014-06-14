@@ -5,10 +5,12 @@ from google.appengine.ext import ndb
 
 ERR_INVALID_NUMBER = 1000
 ERR_DATA_MISSING = 1001
+ERR_DUPLICATE_KEY = 1002
 
 VALIDATION_ERRORS = {
 	ERR_INVALID_NUMBER : "Invalid Number",
-	ERR_DATA_MISSING : "Mandatory field missing"
+	ERR_DATA_MISSING : "Mandatory field missing",
+	ERR_DUPLICATE_KEY : "Duplicate Key"
 }
 
 class ValidationError(Exception):
@@ -71,6 +73,12 @@ class Venue(ModelBase):
 			else:
 				result.append(ValidationResult(ERR_DATA_MISSING, "uniqueName"))
 				
+			# check uniqueness of the key
+			venues_query = Venue.query(Venue.uniqueName == self.uniqueName)
+			venues = venues_query.fetch(1)
+			if len(venues) <> 0:
+				result.append(ValidationResult(ERR_DUPLICATE_KEY, "uniqueName"))
+				
 			if ('displayName' in data_dict):
 				self.displayName = data_dict['displayName']
 			else:
@@ -112,10 +120,11 @@ class Venue(ModelBase):
 			if ("description" in data_dict):
 				self.description = data_dict['description']
 			
-			try:            
-				self.capacity = int(data_dict['capacity'])
-			except ValueError:
-				result.append(ValidationResult(ERR_INVALID_NUMBER, 'capacity'))
+			if ("capacity" in data_dict):
+				try:
+					self.capacity = int(data_dict['capacity'])
+				except ValueError:
+					result.append(ValidationResult(ERR_INVALID_NUMBER, 'capacity'))
 
 			if ("booking" in data_dict):
 				self.booking = data_dict['booking']
