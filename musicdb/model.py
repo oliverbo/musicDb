@@ -1,7 +1,10 @@
 # Model classes
 
+import logging
 import json
 from google.appengine.ext import ndb
+
+logger = logging.getLogger("music_data_handler")
 
 ERR_INVALID_NUMBER = 1000
 ERR_DATA_MISSING = 1001
@@ -67,17 +70,21 @@ class Venue(ModelBase):
 	def copy_data_and_validate(self, data_dict):
 		result = []
 		
+		logger.info("Copying data into venue %s", self.key)
+		
 		if (data_dict):		
 			if ('uniqueName' in data_dict):
 				self.uniqueName = data_dict['uniqueName']
 			else:
 				result.append(ValidationResult(ERR_DATA_MISSING, "uniqueName"))
 				
-			# check uniqueness of the key
-			venues_query = Venue.query(Venue.uniqueName == self.uniqueName)
-			venues = venues_query.fetch(1)
-			if len(venues) <> 0:
-				result.append(ValidationResult(ERR_DUPLICATE_KEY, "uniqueName"))
+			# check uniqueness of the key - doesn't work right now
+			# venues_query = Venue.query(Venue.uniqueName == self.uniqueName)
+			# venues = venues_query.fetch(1)
+			# if len(venues) > 0:
+			#	logger.debug("Found venue %s with uniqueName %s", venues[0].key, venues[0].uniqueName)
+			# if len(venues) <> 0 and venues[0].key != self.key:
+			#	result.append(ValidationResult(ERR_DUPLICATE_KEY, "uniqueName"))
 				
 			if ('displayName' in data_dict):
 				self.displayName = data_dict['displayName']
