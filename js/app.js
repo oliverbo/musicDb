@@ -4,10 +4,6 @@ var musicDbApp = angular.module('musicDbApp',
 musicDbApp.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider.
-			when('/artists', {
-				templateUrl : '/partials/artists.html',
-				controller : 'ArtistController'
-			}).
 			when('/venues', {
 				templateUrl : '/partials/venues.html',
 				controller : 'VenueController'
