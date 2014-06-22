@@ -1,20 +1,20 @@
 import os
 import urllib
 import logging
-import apptools
+import eapptools
 import json
 
 from google.appengine.api import users
 from musicdb import tools
 from musicdb.model import Venue
-from apptools import page_handler
+from eapptools import page_handler
 from musicdb.music_data_handler import VenueHandler
 
 import webapp2
 import jinja2
 
 logger = logging.getLogger("main")
-apptools.web_root = os.path.dirname(__file__) + '/html'
+eapptools.web_root = os.path.dirname(__file__) + '/html'
 
 ACCESS_ALL = 1
 ACCESS_ADMIN = 2

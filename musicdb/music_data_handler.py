@@ -2,7 +2,7 @@
 
 import logging
 from google.appengine.ext import ndb
-from apptools.data_handler import DataHandler
+from eapptools.data_handler import DataHandler
 import musicdb
 from musicdb.model import Venue
 
