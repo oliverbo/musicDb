@@ -65,7 +65,12 @@
 			</div>
 			<div class="form-group">
 			  	<label>Price Level:</label>
-				<input type="text" ng-model="venue.priceLevel" class="form-control"/>
+				<select ng-model="venue.priceLevel" class="form-control">
+					<option value="1">ok</option>
+					<option value="2">expensive</option>
+					<option value="3">very expensive</option>
+					<option value="4">outrageous</option>
+				</select>
 			</div>
 	    	<div class="form-group">
 				<label>Special Tips</label>
@@ -75,9 +80,9 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<button ng-click="saveVenue(venue)" class="btn btn-default">Save</button>
+			<button ng-click="cancel()" class="btn btn-default">Back</button>
 			<button ng-click="delete(venue)" class="btn btn-default">Delete</button>
-			<button ng-click="cancel()" class="btn btn-default">Back</button>		  				  
+			<button ng-click="saveVenue(venue)" class="btn btn-default">Save</button>		  				  
 		</div>
 	</div>
 </form>

@@ -2,6 +2,8 @@
 
 import logging
 import json
+import re
+import string
 from google.appengine.ext import ndb
 
 logger = logging.getLogger("music_data_handler")
@@ -15,6 +17,8 @@ VALIDATION_ERRORS = {
 	ERR_DATA_MISSING : "Mandatory field missing",
 	ERR_DUPLICATE_KEY : "Duplicate Key"
 }
+
+INVALID_CHARS = re.compile('[ .,:/]')
 
 class ValidationError(Exception):
 	result = None
@@ -74,7 +78,8 @@ class Venue(ModelBase):
 		
 		if (data_dict):		
 			if ('uniqueName' in data_dict):
-				self.uniqueName = data_dict['uniqueName']
+				self.uniqueName = string.lower(data_dict['uniqueName'])
+				self.uniqueName = INVALID_CHARS.sub('', self.uniqueName)
 			else:
 				result.append(ValidationResult(ERR_DATA_MISSING, "uniqueName"))
 				
