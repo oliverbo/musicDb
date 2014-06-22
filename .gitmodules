@@ -1,0 +1,3 @@
+[submodule "eapptools"]
+	path = eapptools
+	url = git@github.com:oliverbo/eapptools.git
