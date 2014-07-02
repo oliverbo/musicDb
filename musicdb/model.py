@@ -4,6 +4,7 @@ import logging
 import json
 import re
 import string
+from eapptools.model_base import ModelBase
 from google.appengine.ext import ndb
 
 logger = logging.getLogger("music_data_handler")
@@ -38,18 +39,6 @@ class ValidationResult:
 			self.errorMessage = error_message
 		elif error_code in VALIDATION_ERRORS:
 			self.errorMessage = VALIDATION_ERRORS[error_code]
-			
-
-class ModelBase(ndb.Model):
-	model_name = "BASE"
-	uniqueName = ndb.StringProperty()
-	displayName = ndb.StringProperty()
-	
-	def validate(self):
-		pass
-
-	def copy_data_and_validate(self, data_dict):
-		pass
                 
 def venue_parent_key():
 	return ndb.Key('Base', 'venue')
