@@ -4,8 +4,8 @@ import logging
 import json
 import re
 import string
-from eapptools.model_base import ModelBase
 from google.appengine.ext import ndb
+from eapptools.model_base import ModelBase
 
 logger = logging.getLogger("music_data_handler")
 
@@ -39,12 +39,10 @@ class ValidationResult:
 			self.errorMessage = error_message
 		elif error_code in VALIDATION_ERRORS:
 			self.errorMessage = VALIDATION_ERRORS[error_code]
-                
-def venue_parent_key():
-	return ndb.Key('Base', 'venue')
-    
+                    
 class Venue(ModelBase):
 	model_name = "VENUE"
+	displayName = ndb.StringProperty()
 	address = ndb.StringProperty()
 	zipCode = ndb.StringProperty()
 	city = ndb.StringProperty()
@@ -60,17 +58,23 @@ class Venue(ModelBase):
 	capacity = ndb.IntegerProperty()
 	booking = ndb.StringProperty()
 	publicTransportation = ndb.StringProperty()
+	
+	@classmethod
+	def parent_key(cls):
+		return ndb.Key('Base', 'venue')
         
-	def copy_data_and_validate(self, data_dict):
+	@classmethod
+	def create(cls, data_dict):
 		result = []
+		venue = Venue(parent = cls.parent_key())
 		
-		logger.info("Copying data into venue %s", self.key)
+		logger.info("Copying data into venue %s", venue.key)
 		
 		if (data_dict):		
 			if ('uniqueName' in data_dict):
-				self.uniqueName = string.lower(data_dict['uniqueName'])
-				self.uniqueName = INVALID_CHARS.sub('', self.uniqueName)
-				logger.debug("Saving venue '%s'", self.uniqueName)
+				venue.uniqueName = string.lower(data_dict['uniqueName'])
+				venue.uniqueName = INVALID_CHARS.sub('', venue.uniqueName)
+				logger.debug("Saving venue '%s'", venue.uniqueName)
 			else:
 				result.append(ValidationResult(ERR_DATA_MISSING, "uniqueName"))
 				
@@ -83,61 +87,61 @@ class Venue(ModelBase):
 			#	result.append(ValidationResult(ERR_DUPLICATE_KEY, "uniqueName"))
 				
 			if 'displayName' in data_dict:
-				self.displayName = data_dict['displayName']
+				venue.displayName = data_dict['displayName']
 			else:
 				result.append(ValidationResult(ERR_DATA_MISSING, "displayName"))
 			
 			if 'address' in data_dict:				
-				self.address = data_dict['address']
+				venue.address = data_dict['address']
 				
 			if "zipCode" in data_dict:
-				self.zipCode = data_dict['zipCode']
+				venue.zipCode = data_dict['zipCode']
 				
 			if "city" in data_dict:
-				self.city = data_dict['city']
+				venue.city = data_dict['city']
 				
 			if "state" in data_dict:	
-				self.state = data_dict['state']
+				venue.state = data_dict['state']
 			
 			if "neighborhood" in data_dict:		
-				self.neighborhood = data_dict['neighborhood']
+				venue.neighborhood = data_dict['neighborhood']
 				
 			if "website" in data_dict:
-				self.website = data_dict['website']
+				venue.website = data_dict['website']
 				
 			if "twitterName" in data_dict:
-				self.twitterName = data_dict['twitterName']
+				venue.twitterName = data_dict['twitterName']
 				
 			if "facebookURI" in data_dict:
-				self.facebookURI = data_dict['facebookURI']
+				venue.facebookURI = data_dict['facebookURI']
 	
 			if "phoneNumber" in data_dict:
-				self.phoneNumber = data_dict['phoneNumber']
+				venue.phoneNumber = data_dict['phoneNumber']
 			
 			if "priceLevel" in data_dict and data_dict['priceLevel']:
 				try:
-					self.priceLevel = int(data_dict['priceLevel'])
+					venue.priceLevel = int(data_dict['priceLevel'])
 				except:
 					result.append(ValidationResult(ERR_INVALID_NUMBER, 'priceLevel'))
 				
 			if "description" in data_dict:
-				self.description = data_dict['description']
+				venue.description = data_dict['description']
 			
 			if "capacity" in data_dict:
 				try:
-					self.capacity = int(data_dict['capacity'])
+					venue.capacity = int(data_dict['capacity'])
 				except ValueError:
 					result.append(ValidationResult(ERR_INVALID_NUMBER, 'capacity'))
 
 			if "booking" in data_dict:
-				self.booking = data_dict['booking']
+				venue.booking = data_dict['booking']
 				
 			if "specialTip" in data_dict:	
-				self.specialTip = data_dict['specialTip']
+				venue.specialTip = data_dict['specialTip']
 				
 			if "publicTransportation" in data_dict:
 				logger.debug('-- %s', data_dict['publicTransportation'])
-				self.publicTransportation = data_dict['publicTransportation']
+				venue.publicTransportation = data_dict['publicTransportation']
 		else:			
 			result.append(ValidationResult(ERR_DATA_MISSING, error_message="Empty record" ))
 			
@@ -146,3 +150,5 @@ class Venue(ModelBase):
 				for r in result:
 					logger.debug("Error '%s' (%d) in %s", r.errorMessage, r.errorCode, r.field)
 			raise ValidationError(result)
+		else:
+			return venue

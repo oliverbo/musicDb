@@ -89,10 +89,10 @@ class ResourceHandler(webapp2.RequestHandler):
 				data_handler = resource_descriptor['handler']
 			
 				if not key:
-					result = data_handler.query()
+					result = musicdb.model.Venue.find_all()
 					logger.debug('Result: %s', result)
 				else:
-					result = data_handler.find(key)
+					result = musicdb.model.Venue.find(key)
 				if not result:
 					self.response.status = '404 Not Found'
 				else:
@@ -115,7 +115,9 @@ class ResourceHandler(webapp2.RequestHandler):
 				data = json.loads(self.request.body)
 				logger.debug("Data: %s", data)
 				try:
-					data_handler.save(data, key)
+					entity = musicdb.model.Venue.create(data)
+					entity.validate()
+					entity.put()
 				except musicdb.model.ValidationError as e:
 					self.response.status = '400 Bad Request'
 					self.response.content_type = "application/json"

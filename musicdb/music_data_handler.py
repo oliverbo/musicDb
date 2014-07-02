@@ -27,7 +27,7 @@ class VenueHandler(DataHandler):
 			venue = Venue(parent = musicdb.model.venue_parent_key())			
 			
 		venue.copy_data_and_validate(data)
-		venue.put() 
+		venue.put()
 		
 	def find(self, key):
 		"""Returns a single venue identified with the key or None if it cannot be found"""
@@ -44,13 +44,7 @@ class VenueHandler(DataHandler):
 		if venue:
 			venue.key.delete()
 			
-	def delete_all(self):
-		keys = []
-		venues = self.query()
-		for venue in venues:
-			keys.append(venue.key)
-		logger.info("deleting %s", keys)
-		ndb.delete_multi(keys)
+
 			
 	def export_data(self):
 		return self.query()
