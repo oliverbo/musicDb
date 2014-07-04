@@ -4,7 +4,7 @@ import logging
 from google.appengine.ext import ndb
 from eapptools.data_handler import DataHandler
 import musicdb
-from musicdb.model import Venue
+from musicdb.music_model import Venue
 
 MAXDATA = 50
 

@@ -6,7 +6,7 @@ import json
 
 from google.appengine.api import users
 from musicdb import tools
-from musicdb.model import Venue
+from musicdb.music_model import Venue
 from eapptools import page_handler
 from musicdb.music_data_handler import VenueHandler
 
