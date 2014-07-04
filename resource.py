@@ -1,7 +1,9 @@
 import webapp2
 import json
 import logging
-import musicdb.model
+import musicdb.music_model
+import eapptools
+from eapptools.validation import ValidationError
 from eapptools.data_handler import DataHandler
 from google.appengine.api import users
 from musicdb.music_data_handler import VenueHandler
@@ -89,10 +91,10 @@ class ResourceHandler(webapp2.RequestHandler):
 				data_handler = resource_descriptor['handler']
 			
 				if not key:
-					result = musicdb.model.Venue.find_all()
+					result = musicdb.music_model.Venue.find_all()
 					logger.debug('Result: %s', result)
 				else:
-					result = musicdb.model.Venue.find(key)
+					result = musicdb.music_model.Venue.find(key)
 				if not result:
 					self.response.status = '404 Not Found'
 				else:
@@ -115,10 +117,11 @@ class ResourceHandler(webapp2.RequestHandler):
 				data = json.loads(self.request.body)
 				logger.debug("Data: %s", data)
 				try:
-					entity = musicdb.model.Venue.create(data)
+					entity = musicdb.music_model.Venue.create(data)
 					entity.validate()
+					logger.debug("Saving %s", entity)
 					entity.put()
-				except musicdb.model.ValidationError as e:
+				except ValidationError as e:
 					self.response.status = '400 Bad Request'
 					self.response.content_type = "application/json"
 					response_message = ErrorResponse(ERR_VALIDATION, e.result).to_json()
