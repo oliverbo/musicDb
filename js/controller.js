@@ -57,8 +57,6 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 
 	$scope.saveVenue = function(venue) {	
 		var venueResource = new Venue(venue);
-		console.log(venue.publicTransportation)
-		console.log(venue.description)
 		venueResource.$save(function(success) {
 			$scope.alerts.length = 0;
 			$scope.alerts[0] = { type : "success", message : "Venue saved"};

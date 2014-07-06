@@ -35,40 +35,35 @@ class Venue(ModelBase):
 	def parent_key(cls):
 		return ndb.Key('Base', 'venue')
         
-	@classmethod
-	def create(cls, data_dict):
+	def copy_from_dict(self, data_dict):
 		result = []
-		venue = Venue(parent = cls.parent_key())
-		
-		logger.info("Copying data into venue %s", venue.key)
+		logger.debug("Copying data into venue %s", self.key)
 		
 		if (data_dict):				
-			venue.uniqueName = val.get_string(data_dict, 'uniqueName', result, mandatory = True)
+			self.uniqueName = val.get_string(data_dict, 'uniqueName', result, mandatory = True)
 			#venue.uniqueName = INVALID_CHARS.sub('', venue.uniqueName)
-			venue.displayName = val.get_string(data_dict, 'displayName', result, mandatory = True)
-			venue.address = val.get_string(data_dict, 'address', result)
-			venue.zipCode = val.get_string(data_dict, 'zipCode', result)
-			venue.city = val.get_string(data_dict, 'city', result)
-			venue.state	= val.get_string(data_dict, 'state', result)
-			venue.neighborhood = val.get_string(data_dict, 'neighborhood', result)
-			venue.twitterName = val.get_string(data_dict, 'twitterName', result)		
-			venue.facebookURI = val.get_string(data_dict, 'facebookURI', result)
-			venue.phoneNumber = val.get_string(data_dict, 'phoneNumber', result)
-			venue.priceLevel = val.get_int(data_dict, 'priceLevel', result)
-			venue.description = val.get_string(data_dict, 'description', result)
-			venue.capacity = val.get_int(data_dict, 'capacity', result)
-			venue.booking = val.get_string(data_dict, 'booking', result)
-			venue.specialTip = val.get_string(data_dict, 'specialTip', result)
-			venue.publicTransportation = val.get_string(data_dict, 'publicTransportation', result)
+			self.displayName = val.get_string(data_dict, 'displayName', result, mandatory = True)
+			self.address = val.get_string(data_dict, 'address', result)
+			self.zipCode = val.get_string(data_dict, 'zipCode', result)
+			self.city = val.get_string(data_dict, 'city', result)
+			self.state	= val.get_string(data_dict, 'state', result)
+			self.neighborhood = val.get_string(data_dict, 'neighborhood', result)
+			self.twitterName = val.get_string(data_dict, 'twitterName', result)		
+			self.facebookURI = val.get_string(data_dict, 'facebookURI', result)
+			self.phoneNumber = val.get_string(data_dict, 'phoneNumber', result)
+			self.priceLevel = val.get_int(data_dict, 'priceLevel', result)
+			self.description = val.get_string(data_dict, 'description', result)
+			self.capacity = val.get_int(data_dict, 'capacity', result)
+			self.booking = val.get_string(data_dict, 'booking', result)
+			self.specialTip = val.get_string(data_dict, 'specialTip', result)
+			self.publicTransportation = val.get_string(data_dict, 'publicTransportation', result)
 		else:			
 			result.append(val.ValidationResult(ERR_DATA_MISSING, error_message="Empty record" ))
 			
-		logger.debug("Populated venue: %s", venue)	
+		logger.debug("Populated venue: %s", self)	
 			
 		if len(result) > 0:
 			if logger.getEffectiveLevel() == logging.DEBUG:
 				for r in result:
 					logger.debug("Error '%s' (%d) in %s", r.errorMessage, r.errorCode, r.field)
 			raise val.ValidationError(result)
-		else:
-			return venue

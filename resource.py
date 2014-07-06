@@ -117,10 +117,16 @@ class ResourceHandler(webapp2.RequestHandler):
 				data = json.loads(self.request.body)
 				logger.debug("Data: %s", data)
 				try:
-					entity = musicdb.music_model.Venue.create(data)
-					entity.validate()
-					logger.debug("Saving %s", entity)
-					entity.put()
+					if key:
+						entity = musicdb.music_model.Venue.find(key)
+						if entity:
+							entity.copy_from_dict(data)
+							logger.debug("Updating %s", entity)
+						else:
+							entity = musicdb.music_model.Venue.create(data)
+							logger.debug("Inserting %s", entity)
+						entity.validate()
+						entity.put()
 				except ValidationError as e:
 					self.response.status = '400 Bad Request'
 					self.response.content_type = "application/json"
