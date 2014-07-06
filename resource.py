@@ -146,7 +146,11 @@ class ResourceHandler(webapp2.RequestHandler):
 			else:
 				data_handler = resource_descriptor['handler']
 				try:
-					data_handler.delete(key)
+					entity = musicdb.music_model.Venue.find(key)
+					if entity:						
+						entity.delete()
+					else:
+						self.response.status = '404 Not Found'
 				except:
 					self.response.status = '400 Bad Request'
 					self.response.content_type = "application/json"
