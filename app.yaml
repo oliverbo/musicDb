@@ -16,7 +16,7 @@ handlers:
 - url: /js
   static_dir: js
 - url: /api/.*
-  script: musicdb.application.resource_handler
+  script: application.resource_handler
 - url: /.*
-  script: main.application
+  script: application.page_handler
   
