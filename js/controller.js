@@ -98,7 +98,6 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 
 var ImportController = function ($scope, $modalInstance) {
   $scope.upload = function (file) {
-  	console.log("----> " + file);
     $modalInstance.close(file);
   };
 

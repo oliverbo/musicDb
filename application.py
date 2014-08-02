@@ -28,7 +28,7 @@ config[eapptools.CFG_PAGE_MAPPING] = {
 	'/index.html' : PageDescriptor(),
 	'/partials/venues.html' : PageDescriptor(),
 	'/partials/venuePage.html' : PageDescriptor(),
-	'/partials/venuePageAdmin.html' : PageDescriptor(eapptools.ACCESS_ADMIN)
+	'/partials/venuePageAdmin.html' : PageDescriptor(access=eapptools.ACCESS_ADMIN)
 }
 
 resource_handler = webapp2.WSGIApplication([

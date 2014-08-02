@@ -41,7 +41,7 @@ class Venue(ModelBase):
 		
 		if (data_dict):				
 			self.uniqueName = val.get_string(data_dict, 'uniqueName', result, mandatory = True)
-			#venue.uniqueName = INVALID_CHARS.sub('', venue.uniqueName)
+			self.uniqueName = INVALID_CHARS.sub('', self.uniqueName)
 			self.displayName = val.get_string(data_dict, 'displayName', result, mandatory = True)
 			self.address = val.get_string(data_dict, 'address', result)
 			self.zipCode = val.get_string(data_dict, 'zipCode', result)

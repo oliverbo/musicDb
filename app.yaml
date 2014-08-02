@@ -17,6 +17,8 @@ handlers:
   static_dir: js
 - url: /api/.*
   script: application.resource_handler
+- url: /x/.*
+  script: main.application
 - url: /.*
   script: application.page_handler
   
