@@ -30,18 +30,12 @@ class Venue(ModelBase):
 	capacity = ndb.IntegerProperty()
 	booking = ndb.StringProperty()
 	publicTransportation = ndb.StringProperty()
-	
-	@classmethod
-	def parent_key(cls):
-		return ndb.Key('Base', 'venue')
         
 	def copy_from_dict(self, data_dict):
 		result = []
 		logger.debug("Copying data into venue %s", self.key)
 		
 		if (data_dict):				
-			self.uniqueName = val.get_string(data_dict, 'uniqueName', result, mandatory = True)
-			self.uniqueName = INVALID_CHARS.sub('', self.uniqueName)
 			self.displayName = val.get_string(data_dict, 'displayName', result, mandatory = True)
 			self.address = val.get_string(data_dict, 'address', result)
 			self.zipCode = val.get_string(data_dict, 'zipCode', result)

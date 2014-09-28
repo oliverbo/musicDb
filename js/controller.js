@@ -14,9 +14,9 @@ musicDbControllers.controller("VenueController", function($scope, $location, $mo
 	pageInfo.isAdmin ? $scope.isAdmin = true : $scope.isAdmin = false;
 	$scope.showVenue = function(venue) {
 		if (pageInfo.isAdmin) {
-			$location.path('/admin/venues/' + venue.uniqueName);	
+			$location.path('/admin/venues/' + venue.id);	
 		} else {
-			$location.path('/venues/' + venue.uniqueName);
+			$location.path('/venues/' + venue.id);
 		}
 	};
 	$scope.addVenue = function() {
