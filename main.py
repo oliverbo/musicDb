@@ -7,7 +7,6 @@ import json
 from google.appengine.api import users
 from musicdb import tools
 from musicdb.music_model import Venue
-from eapptools import page_handler
 
 import webapp2
 import jinja2

@@ -88,7 +88,7 @@ musicDbControllers.controller("VenueAdminController", function($scope, $location
 	
 		modalInstance.result.then(function(ok) {
 			var venueResource = new Venue({
-				uniqueName : venue.uniqueName
+				id : venue.id
 			});
 			venueResource.$delete()
 			$location.path('/venues');	
